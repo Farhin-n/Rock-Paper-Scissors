@@ -1,69 +1,72 @@
 
-playNewGame();
+window.addEventListener("DOMContentLoaded", (event) => {
+	const el = document.getElementById("goBtn");
+	if(el) {
+		el.addEventListener("click", playNewGame, false);
+	}
+});
 
-function getComputerChoice () {
-	let computerSelection = Math.random();
-	if(computerSelection <= 0.35) 
-		computerSelection = "rock";
-	else if(computerSelection > 0.35 && computerSelection <= 0.65) 
-		computerSelection = "paper";
-	else
-	computerSelection = "scissors";
-	console.log(computerSelection);
-	return computerSelection;
-}
-
-function getUserChoice () {
-	let userSelection = prompt("Enter your choice (rock, paper, scissors): ");
-	userSelection = userSelection.toLowerCase();
-	console.log(userSelection);
-	return userSelection;
-}
-
-function playNewGame () {
-	let userScore = 0, computerScore = 0;
-
-	function playRound (user, computer) {
-
-		if( user === computer) {
-			console.log("It's a tie!");
-		} else if (user === "rock" && computer === "paper") {
-			console.log("Paper covers rock. You lose!");
-			computerScore++;
-		} else if (user === "rock" && computer === "scissors") {
-			console.log("Rock crushes scissors. You win!");
-			userScore++;
-		} else if (user === "paper" && computer === "rock") {
-			console.log("Paper covers rock. You win!");
-			userScore++;
-		} else if (user === "paper" && computer === "scissors") {
-			console.log("Scissors cuts paper. You lose!");
-			computerScore++;
-		} else if (user === "scissors" && computer === "rock") {
-			console.log("Rock crushes scissors. You lose!");
-			computerScore++;
-		} else if (user === "scissors" && computer === "paper") {
-			console.log("Scissors cuts paper. You win!");
-			userScore++;
+function createImgEl (id, val) {
+	let img = document.createElement("img");
+	let sourceEl = id;
+	switch(val) {
+		case 'rock': {
+			img.src = "Images/Rock.jpg";
+			img.alt = "Rock";
+			break;
 		}
-
-		return userScore, computerScore; 
-	}	
-
-	let ROUNDS = 5;
-	let currentRound = 1;
-	for( i = currentRound; i <= ROUNDS; i++) {
-		const computerChoice = getComputerChoice();
-		const userChoice = getUserChoice();
-		playRound(userChoice, computerChoice);
+		case 'paper': {
+			img.src = "Images/Paper.jpg";
+			img.alt = "Paper";
+			break;
+		}
+		case 'scissors': {
+			img.src = "Images/Scissors.jpg";
+			img.alt = "Scissors";
+			break;
+		}
+		default: break;
 	}
-
-	if(userScore > computerScore) {
-		console.log("You win the game!");
-	} else if (userScore > computerScore) {
-		console.log("You lost the game!");
-	} else {
-		console.log("It's a tie!");
-	}
+	sourceEl.appendChild(img);
+	let h3 = document.querySelector("h3");
+	h3.classList.remove("hide");
 }
 
+function playNewGame() {
+	let userScore = 0, computerScore = 0;
+	let text = document.getElementById("score");
+	const computer = getComputerChoice();
+	const user = document.getElementById("userInput").value.toLowerCase();
+	
+	createImgEl(computerMove, computer);
+	createImgEl(userMove, user); 
+	
+	if( user === computer) {
+		text.innerHTML = "It's a tie!";
+	} else if (user === "rock" && computer === "paper") {
+		text.innerHTML = "Paper covers rock. You lose!";
+	} else if (user === "rock" && computer === "scissors") {
+		text.innerHTML = "Rock crushes scissors. You win!";
+	} else if (user === "paper" && computer === "rock") {
+		text.innerHTML = "Paper covers rock. You win!"
+	} else if (user === "paper" && computer === "scissors") {
+		text.innerHTML = "Scissors cuts paper. You lose!"
+	} else if (user === "scissors" && computer === "rock") {
+		text.innerHTML = "Rock crushes scissors. You lose!";
+	} else if (user === "scissors" && computer === "paper") {
+		text.innerHTML = "Scissors cuts paper. You win!";
+	}
+
+	return userScore, computerScore, text; 
+}
+
+function getComputerChoice() {
+	let move = Math.random();
+	if(move <= 0.35) 
+		move = "rock";
+	else if(move > 0.35 && move <= 0.65) 
+		move = "paper";
+	else
+	move = "scissors";
+	return move;
+}

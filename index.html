@@ -5,9 +5,24 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Game of Rock, Paper & Scissors</title>
 	<script src="script.js"></script>
+	<link href="style.css" rel="stylesheet">
 </head>
 <body>
-	
-	
+	<header>
+		<img src="Images/RockPaperScissors.jpg"
+	alt="Rock Paper Scissors" width="100" height="100">
+		<h1>Rock, Paper, Scissors</h1>
+	</header>
+	<section id="user-wrapper">
+		<p>Enter your move: </p>
+		<input type="text" id="userInput" placeholder="Rock, Paper or Scissors" />
+		<button type="button" id="goBtn">Go!</button>
+	</section>
+	<section id="moves">
+		<div id="computerMove" class="move"></div>
+		<h3 class="hide"> - VS - </h3>
+		<div id="userMove" class="move"></div>
+	</section>
+	<h5 id="score"></h5>
 </body>
 </html>
