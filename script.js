@@ -1,64 +1,34 @@
 
 window.addEventListener("DOMContentLoaded", (event) => {
-	const el = document.getElementById("goBtn");
-	if(el) {
-		el.addEventListener("click", playNewGame, false);
-	}
-});
-
-function createImgEl (id, val) {
-	let img = document.createElement("img");
-	let sourceEl = id;
-	switch(val) {
-		case 'rock': {
-			img.src = "Images/Rock.jpg";
-			img.alt = "Rock";
-			break;
-		}
-		case 'paper': {
-			img.src = "Images/Paper.jpg";
-			img.alt = "Paper";
-			break;
-		}
-		case 'scissors': {
-			img.src = "Images/Scissors.jpg";
-			img.alt = "Scissors";
-			break;
-		}
-		default: break;
-	}
-	sourceEl.appendChild(img);
-	let h3 = document.querySelector("h3");
-	h3.classList.remove("hide");
-}
-
-function playNewGame() {
+	const buttons = document.getElementsByClassName("choice");
+	const buttonsArray = Array.prototype.slice.call(buttons);
 	let userScore = 0, computerScore = 0;
-	let text = document.getElementById("score");
-	const computer = getComputerChoice();
-	const user = document.getElementById("userInput").value.toLowerCase();
-	
-	createImgEl(computerMove, computer);
-	createImgEl(userMove, user); 
-	
-	if( user === computer) {
-		text.innerHTML = "It's a tie!";
-	} else if (user === "rock" && computer === "paper") {
-		text.innerHTML = "Paper covers rock. You lose!";
-	} else if (user === "rock" && computer === "scissors") {
-		text.innerHTML = "Rock crushes scissors. You win!";
-	} else if (user === "paper" && computer === "rock") {
-		text.innerHTML = "Paper covers rock. You win!"
-	} else if (user === "paper" && computer === "scissors") {
-		text.innerHTML = "Scissors cuts paper. You lose!"
-	} else if (user === "scissors" && computer === "rock") {
-		text.innerHTML = "Rock crushes scissors. You lose!";
-	} else if (user === "scissors" && computer === "paper") {
-		text.innerHTML = "Scissors cuts paper. You win!";
-	}
 
-	return userScore, computerScore, text; 
-}
+	buttonsArray.forEach(button => {
+		button.addEventListener("click", function() {
+			const computerChoice = getComputerChoice();
+			const userChoice = button.id;
+			const currentWinner = playRound(userChoice, computerChoice);
+			currentWinner === "user" ?  userScore++ : computerScore++;
+			setScore(userScore, computerScore);
+			updateWinner(userScore, computerScore, buttonsArray);
+		});
+	});
+
+	let playAgain = document.getElementById("playAgain");
+	playAgain.addEventListener("click", function() {
+		userScore = 0;
+		computerScore = 0;
+		setScore(userScore, computerScore);
+		document.getElementById("text").textContent = "";
+		document.getElementById("finalWinner").textContent = "";
+		buttonsArray.forEach(btn => {
+			btn.disabled = false;
+			btn.classList.remove("disabled");
+		});
+		playAgain.style.display = "none";
+	});
+});
 
 function getComputerChoice() {
 	let move = Math.random();
@@ -69,4 +39,56 @@ function getComputerChoice() {
 	else
 	move = "scissors";
 	return move;
+}
+
+function playRound (user, computer) {
+	let text = document.getElementById("text");
+	let winner = "";
+	if(user === computer) {
+		text.textContent = "It's a tie!";
+	} else if (user === "rock" && computer === "paper") {
+		text.textContent = "Paper covers rock. You lose!";
+		winner = "computer";
+	} else if (user === "rock" && computer === "scissors") {
+		text.textContent = "Rock crushes scissors. You win!";
+		winner = "user";
+	} else if (user === "paper" && computer === "rock") {
+		text.textContent = "Paper covers rock. You win!";
+		winner = "user";
+	} else if (user === "paper" && computer === "scissors") {
+		text.textContent = "Scissors cuts paper. You lose!";
+		winner = "computer";
+	} else if (user === "scissors" && computer === "rock") {
+		text.textContent = "Rock crushes scissors. You lose!";
+		winner = "computer";
+	} else if (user === "scissors" && computer === "paper") {
+		text.textContent = "Scissors cuts paper. You win!";
+		winner = "user";
+	}
+
+	return winner;
+}
+
+function setScore(user, computer) {
+	let userScoreContent = document.getElementById("userScore");
+	let computerScoreContent = document.getElementById("computerScore");
+	userScoreContent.textContent = user;
+	computerScoreContent.textContent = computer;
+}
+
+function updateWinner(user, computer, ele) {
+	let winner = document.getElementById("finalWinner");
+	if(user === 5 || computer === 5) {
+		if(user === 5) {
+			winner.textContent = "You win!";
+		} else {
+			winner.textContent = "You lose!";
+		}
+		ele.forEach(btn => {
+			btn.disabled = true;
+			btn.classList.add("disabled");
+		});
+		document.getElementById("playAgain").style.display = "block";
+	}
+	
 }

@@ -13,16 +13,20 @@
 	alt="Rock Paper Scissors" width="100" height="100">
 		<h1>Rock, Paper, Scissors</h1>
 	</header>
-	<section id="user-wrapper">
-		<p>Enter your move: </p>
-		<input type="text" id="userInput" placeholder="Rock, Paper or Scissors" />
-		<button type="button" id="goBtn">Go!</button>
-	</section>
-	<section id="moves">
-		<div id="computerMove" class="move"></div>
-		<h3 class="hide"> - VS - </h3>
-		<div id="userMove" class="move"></div>
-	</section>
-	<h5 id="score"></h5>
+	
+	<main id="choices">
+		<h2>Choose your move</h2>
+		<div id="buttons">
+			<button type="button" class="choice" id="rock">Rock</button>
+			<button type="button" class="choice" id="paper">Paper</button>
+			<button type="button" class="choice" id="scissors">Scissors</button>
+		</div>
+		<h3 id="score">
+			<span id="userScore">You</span> vs <span id="computerScore">Machine</span>
+		</h3>
+		<div id="text"></div>
+		<h1 id="finalWinner"></h1>
+		<button type="button" id="playAgain">Play Again</button>
+	</main>
 </body>
 </html>
