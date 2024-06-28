@@ -9,7 +9,11 @@ window.addEventListener("DOMContentLoaded", (event) => {
 			const computerChoice = getComputerChoice();
 			const userChoice = button.id;
 			const currentWinner = playRound(userChoice, computerChoice);
-			currentWinner === "user" ?  userScore++ : computerScore++;
+			if(currentWinner === "user") {
+				userScore++;
+			} else if(currentWinner === "computer") {
+				computerScore++;
+			}
 			setScore(userScore, computerScore);
 			updateWinner(userScore, computerScore, buttonsArray);
 		});
@@ -46,6 +50,7 @@ function playRound (user, computer) {
 	let winner = "";
 	if(user === computer) {
 		text.textContent = "It's a tie!";
+		winner = "";
 	} else if (user === "rock" && computer === "paper") {
 		text.textContent = "Paper covers rock. You lose!";
 		winner = "computer";
